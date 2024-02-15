@@ -80,5 +80,3 @@ def index():
 
     return render_template('index.html', today=date.today(), data={"fanduel": fanduel, "draftkings": draftkings, "betmgm": betmgm})
 
-if __name__ == '__main__':
-    app.run(debug=True)
