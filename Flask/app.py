@@ -1,7 +1,7 @@
 import os
 from datetime import date
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from functools import lru_cache
 import subprocess
 import re
@@ -9,7 +9,7 @@ import time
 
 def fetch_game_data(sportsbook="fanduel"):
     main_py_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'main.py'))
-    cmd = ["python", main_py_path, "-xgb", f"-odds={sportsbook}"]
+    cmd = ["python3", main_py_path, "-xgb", f"-odds={sportsbook}"]
     try:
         process = subprocess.run(cmd, capture_output=True, text=True, check=True)
         stdout = process.stdout
@@ -80,3 +80,9 @@ def index():
 
     return render_template('index.html', today=date.today(), data={"fanduel": fanduel, "draftkings": draftkings, "betmgm": betmgm})
 
+@app.route("/predict", methods=["GET", "POST"]) 
+def predict():
+    return fetch_game_data(sportsbook="draftkings")
+
+if __name__ == "__main__":
+    app.run(debug=True)
