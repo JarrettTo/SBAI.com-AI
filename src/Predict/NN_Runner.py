@@ -12,8 +12,8 @@ init()
 
 base_path = os.environ.get('MODEL_BASE_PATH', 'Models/')
 # Append the specific model paths to the base path
-model_path = os.path.join(base_path, 'Trained-Model-ML-1707926667.0698135')
-ou_model_path = os.path.join(base_path, "NN_Models/Trained-Model-OU-1699315414.2268295")
+model_path = os.path.join(base_path, 'Trained-Model-ML-1708432661.345729')
+ou_model_path = os.path.join(base_path, 'Trained-Model-OU-1708432768.082614')
 
 model = load_model(model_path)
 ou_model = load_model(ou_model_path)

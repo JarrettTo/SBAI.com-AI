@@ -11,10 +11,10 @@ from src.Utils import Kelly_Criterion as kc
 # from src.Utils.Dictionaries import team_index_current
 # from src.Utils.tools import get_json_data, to_data_frame, get_todays_games_json, create_todays_games
 init()
-base_path = os.environ.get('MODEL_BASE_PATH', 'Models/')
+base_path = os.environ.get('MODEL_BASE_PATH', 'Models')
 # Append the specific model paths to the base path
-model_path = os.path.join(base_path, 'Trained-Model-ML-1707926667.0698135')
-ou_model_path = os.path.join(base_path, "NN_Models/Trained-Model-OU-1699315414.2268295")
+model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_54.8%_UO-8.json')
+ou_model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_68.9%_ML-3.json')
 xgb_ml = xgb.Booster()
 xgb_ml.load_model(model_path)
 xgb_uo = xgb.Booster()
