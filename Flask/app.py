@@ -80,7 +80,7 @@ def index():
 
     return render_template('index.html', today=date.today(), data={"fanduel": fanduel, "draftkings": draftkings, "betmgm": betmgm})
 
-@app.route("/predict", methods=["GET", "POST"]) 
+@app.route("/predict", methods=["GET"]) 
 def predict():
     return fetch_game_data(sportsbook="draftkings")
 
