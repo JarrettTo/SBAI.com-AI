@@ -8,13 +8,13 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --default-timeout=120 -r requirements.txt
 
-# Make port 80 available to the world outside this container
+ENV MODEL_BASE_PATH /app/Models/
+
 EXPOSE 5000
 
-# Define environment variable
-ENV NAME World
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
+
