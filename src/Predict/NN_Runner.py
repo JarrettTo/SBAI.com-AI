@@ -1,5 +1,5 @@
 import copy
-
+import os
 import numpy as np
 import tensorflow as tf
 from colorama import Fore, Style, init, deinit
@@ -9,8 +9,14 @@ from src.Utils import Expected_Value
 from src.Utils import Kelly_Criterion as kc
 
 init()
-model = load_model('Models/Trained-Model-ML-1707926667.0698135')
-ou_model = load_model("Models/NN_Models/Trained-Model-OU-1699315414.2268295")
+
+base_path = os.environ.get('MODEL_BASE_PATH', 'Models/')
+# Append the specific model paths to the base path
+model_path = os.path.join(base_path, 'Trained-Model-ML-1707926667.0698135')
+ou_model_path = os.path.join(base_path, "NN_Models/Trained-Model-OU-1699315414.2268295")
+
+model = load_model(model_path)
+ou_model = load_model(ou_model_path)
 
 
 def nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, kelly_criterion):

@@ -1,3 +1,4 @@
+import sys
 import os
 from datetime import date
 import json
@@ -6,6 +7,11 @@ from functools import lru_cache
 import subprocess
 import re
 import time
+
+main_py_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'main.py'))
+sys.path.append(os.path.dirname(main_py_path))
+
+from main import main2
 
 def fetch_game_data(sportsbook="fanduel"):
     main_py_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'main.py'))
@@ -40,7 +46,7 @@ def fetch_game_data(sportsbook="fanduel"):
 
             print(json.dumps(game_dict, sort_keys=True, indent=4))
             games[f"{game_dict['away_team']}:{game_dict['home_team']}"] = game_dict
-
+        
         return games
 
     except subprocess.CalledProcessError as e:
@@ -82,7 +88,7 @@ def index():
 
 @app.route("/predict", methods=["GET"]) 
 def predict():
-    return fetch_game_data(sportsbook="draftkings")
+    return main2()
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run()

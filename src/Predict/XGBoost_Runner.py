@@ -1,5 +1,5 @@
 import copy
-
+import os
 import numpy as np
 import pandas as pd
 import xgboost as xgb
@@ -11,10 +11,14 @@ from src.Utils import Kelly_Criterion as kc
 # from src.Utils.Dictionaries import team_index_current
 # from src.Utils.tools import get_json_data, to_data_frame, get_todays_games_json, create_todays_games
 init()
+base_path = os.environ.get('MODEL_BASE_PATH', 'Models/')
+# Append the specific model paths to the base path
+model_path = os.path.join(base_path, 'Trained-Model-ML-1707926667.0698135')
+ou_model_path = os.path.join(base_path, "NN_Models/Trained-Model-OU-1699315414.2268295")
 xgb_ml = xgb.Booster()
-xgb_ml.load_model('Models/XGBoost_Models/XGBoost_68.7%_ML-4.json')
+xgb_ml.load_model(model_path)
 xgb_uo = xgb.Booster()
-xgb_uo.load_model('Models/XGBoost_Models/XGBoost_53.7%_UO-9.json')
+xgb_uo.load_model(ou_model_path)
 
 
 def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, kelly_criterion):
