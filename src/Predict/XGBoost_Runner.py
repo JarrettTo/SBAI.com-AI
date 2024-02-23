@@ -13,8 +13,9 @@ from src.Utils import Kelly_Criterion as kc
 init()
 base_path = os.environ.get('MODEL_BASE_PATH', 'Models')
 # Append the specific model paths to the base path
-model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_54.8%_UO-8.json')
-ou_model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_68.9%_ML-3.json')
+model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_68.9%_ML-3.json')
+
+ou_model_path = os.path.join(base_path, 'XGBoost_Models/XGBoost_54.8%_UO-8.json')
 xgb_ml = xgb.Booster()
 xgb_ml.load_model(model_path)
 xgb_uo = xgb.Booster()
