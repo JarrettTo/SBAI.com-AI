@@ -86,7 +86,7 @@ def createTodaysGames(games, df, odds):
 
     return data, todays_games_uo, frame_ml, home_team_odds, away_team_odds
 
-def main2():
+def server_predict():
     odds = None
 
     odds = SbrOddsProvider(sportsbook="draftkings").get_odds()
@@ -94,25 +94,14 @@ def main2():
     if len(games) == 0:
         print("No games found.")
         return
-    if (games[0][0] + ':' + games[0][1]) not in list(odds.keys()):
-        print(games[0][0] + ':' + games[0][1])
-        print(Fore.RED,"--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
-        print(Style.RESET_ALL)
-        odds = None
-    else:
-        print(f"------------------draftkings odds data------------------")
-        for g in odds.keys():
-            home_team, away_team = g.split(":")
-            print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
-
-
+   
     data = get_json_data(data_url)
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)
     
 
     print("---------------XGBoost Model Predictions---------------")
-    XGBoost_Runner.xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, True)
+    XGBoost_Runner.xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, True)
     print("-------------------------------------------------------")
 
 def main():

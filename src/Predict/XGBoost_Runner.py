@@ -21,6 +21,59 @@ xgb_ml.load_model(model_path)
 xgb_uo = xgb.Booster()
 xgb_uo.load_model(ou_model_path)
 
+def xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, kelly_criterion):
+    ml_predictions_array = []
+
+    for row in data:
+        ml_predictions_array.append(xgb_ml.predict(xgb.DMatrix(np.array([row]))))
+
+    frame_uo = copy.deepcopy(frame_ml)
+    frame_uo['OU'] = np.asarray(todays_games_uo)
+    data = frame_uo.values
+    data = data.astype(float)
+
+    ou_predictions_array = []
+
+    for row in data:
+        ou_predictions_array.append(xgb_uo.predict(xgb.DMatrix(np.array([row]))))
+
+    count = 0
+    predictions = []
+    for count, game in enumerate(games):
+        home_team = game[0]
+        away_team = game[1]
+        winner = int(np.argmax(ml_predictions_array[count]))
+        under_over = int(np.argmax(ou_predictions_array[count]))
+        winner_confidence = ml_predictions_array[count]
+        un_confidence = ou_predictions_array[count]
+
+        ml_pred = home_team if winner == 1 else away_team
+        ou_pred = "UNDER {todays_games_uo[count]}" if under_over == 0 else "OVER {todays_games_uo[count]}"
+
+        if winner == 1:
+            winner_confidence = round(winner_confidence[0][1] * 100, 1)
+        else:
+            winner_confidence = round(winner_confidence[0][0] * 100, 1)
+
+        if under_over == 0:
+            un_confidence = round(ou_predictions_array[count][0][0] * 100, 1)
+        else:
+            un_confidence = round(ou_predictions_array[count][0][1] * 100, 1)
+
+        prediction = {
+            "id": str(count),  
+            "home_team": home_team,
+            "away_team": away_team,
+            "ml_pred": ml_pred,
+            "ml_conf": str(winner_confidence),
+            "ou_pred": ou_pred,
+            "ou_conf": str(un_confidence),
+        }
+
+        predictions.append(prediction)
+
+    return predictions
+
 
 def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, kelly_criterion):
     ml_predictions_array = []

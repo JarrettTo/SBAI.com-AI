@@ -11,7 +11,7 @@ import time
 main_py_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'main.py'))
 sys.path.append(os.path.dirname(main_py_path))
 
-from main import main2
+from main import server_predict
 
 def fetch_game_data(sportsbook="fanduel"):
     main_py_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'main.py'))
@@ -80,15 +80,11 @@ def fetch_betmgm(ttl_hash=None):
 
 @app.route("/")
 def index():
-    fanduel = fetch_fanduel(ttl_hash=get_ttl_hash())
-    draftkings = fetch_draftkings(ttl_hash=get_ttl_hash())
-    betmgm = fetch_betmgm(ttl_hash=get_ttl_hash())
-
-    return render_template('index.html', today=date.today(), data={"fanduel": fanduel, "draftkings": draftkings, "betmgm": betmgm})
+    return server_predict()
 
 @app.route("/predict", methods=["GET"]) 
 def predict():
-    return main2()
+    return server_predict()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
