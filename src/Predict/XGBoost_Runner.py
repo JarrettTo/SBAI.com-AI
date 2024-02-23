@@ -48,7 +48,7 @@ def xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, aw
         un_confidence = ou_predictions_array[count]
 
         ml_pred = home_team if winner == 1 else away_team
-        ou_pred = "UNDER {todays_games_uo[count]}" if under_over == 0 else "OVER {todays_games_uo[count]}"
+        ou_pred = "UNDER {}".format(todays_games_uo[count]) if under_over == 0 else "OVER {}".format(todays_games_uo[count])
 
         if winner == 1:
             winner_confidence = round(winner_confidence[0][1] * 100, 1)
@@ -65,9 +65,9 @@ def xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, aw
             "home_team": home_team,
             "away_team": away_team,
             "ml_pred": ml_pred,
-            "ml_conf": str(winner_confidence),
+            "ml_conf": "{}%".format(str(winner_confidence)),
             "ou_pred": ou_pred,
-            "ou_conf": str(un_confidence),
+            "ou_conf": "{}%".format(str(un_confidence)),
         }
 
         predictions.append(prediction)

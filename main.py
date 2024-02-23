@@ -101,8 +101,8 @@ def server_predict():
     
 
     print("---------------XGBoost Model Predictions---------------")
-    XGBoost_Runner.xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, True)
-    print("-------------------------------------------------------")
+    return XGBoost_Runner.xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, True)
+  
 
 def main():
     odds = None
