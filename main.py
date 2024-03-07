@@ -3,12 +3,18 @@ from datetime import datetime, timedelta
 import os
 import pandas as pd
 import tensorflow as tf
+import importlib
 from colorama import Fore, Style
 
 from src.DataProviders.SbrOddsProvider import SbrOddsProvider
 from src.Predict import XGBoost_Runner
 from src.Utils.Dictionaries import team_index_current
 from src.Utils.tools import create_todays_games_from_odds, get_json_data, to_data_frame, get_todays_games_json, create_todays_games
+Get_Data = importlib.import_module("src.Process-Data.Get_Data")
+Get_Odds_Data = importlib.import_module("src.Process-Data.Get_Odds_Data")
+Create_Games = importlib.import_module("src.Process-Data.Create_Games")
+XGBoost_Model_ML = importlib.import_module("src.Train-Models.XGBoost_Model_ML")
+XGBoost_Model_UO = importlib.import_module("src.Train-Models.XGBoost_Model_UO")
 
 todays_games_url = 'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/2023/scores/00_todays_scores.json'
 data_url = 'https://stats.nba.com/stats/leaguedashteamstats?' \
@@ -102,7 +108,17 @@ def server_predict():
 
     print("---------------XGBoost Model Predictions---------------")
     return XGBoost_Runner.xgb_server_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds, True)
-  
+
+def update_data(): 
+    res1 = Get_Data.get_data()
+    res2 = Get_Odds_Data.get_odds_data()
+    res3 = Create_Games.create_games()
+    return res1 + res2 + res3
+
+def train_models():
+    res1 = XGBoost_Model_ML.xgboost_model_ml()
+    res2 = XGBoost_Model_UO.xgboost_model_uo()
+    return res1 + res2
 
 def main():
     odds = None
