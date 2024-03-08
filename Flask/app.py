@@ -31,5 +31,10 @@ def train():
     res2 = train_models()
     return res1 + res2
 
+@app.route("/update_data") 
+def train():
+    res1 = update_data()
+    return res1
+
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=5000)
