@@ -32,7 +32,7 @@ def train():
     return res1 + res2
 
 @app.route("/update_data") 
-def update_data():
+def update_data_route():
     res1 = update_data()
     return res1
 
