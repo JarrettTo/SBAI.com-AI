@@ -37,7 +37,7 @@ begin_year_pointer = year[0]
 end_year_pointer = year[0]
 count = 0
 
-con = sqlite3.connect("../../Data/teams.sqlite")
+con = sqlite3.connect("./Data/teams.sqlite")
 
 for season1 in tqdm(season):
     for month1 in tqdm(month):
